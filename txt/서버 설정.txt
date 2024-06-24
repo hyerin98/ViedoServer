@@ -1,0 +1,38 @@
+서버 설정
+VideoServer 프로젝트 실행
+Server.cs 스크립트에는 서버를 시작하는 ServerCreate() 메서드가 있습니다. 이 메서드를 호출하여 서버를 시작합니다.
+서버가 시작되면 PortInput에 입력된 포트 번호를 사용하여 클라이언트의 연결을 기다립니다.
+클라이언트 설정
+VideoClient 프로젝트 실행
+
+Client.cs 스크립트에는 서버에 연결하고 버튼 클릭에 따라 명령을 서버로 전송하는 로직이 있습니다.
+클라이언트를 실행하고 서버의 IP 주소와 포트 번호를 입력합니다 (IPInput, PortInput).
+연결 버튼을 클릭하여 서버에 연결합니다 (ConnectToServer() 메서드).
+버튼 클릭 시 명령 전송
+
+클라이언트에서는 Button1, Button2, Button3 버튼을 클릭하여 각각 "VIDEO1", "VIDEO2", "VIDEO3" 명령을 서버로 전송합니다.
+예를 들어, Button1을 클릭하면 "VIDEO1" 명령이 서버로 전송됩니다.
+서버에서 명령 수신 및 비디오 재생
+서버에서 명령 수신
+
+서버는 클라이언트로부터 수신된 명령을 Server.cs의 OnIncomingData() 메서드에서 처리합니다.
+명령이 "VIDEO1", "VIDEO2", "VIDEO3" 등 비디오 재생 명령일 경우, VideoPlayerController.cs의 PlayVideo() 메서드를 호출하여 해당 비디오를 재생합니다.
+비디오 재생
+
+VideoPlayerController.cs에서는 AVPro MediaPlayer를 사용하여 비디오를 재생합니다.
+서버에서 수신된 명령을 분석하여 적절한 비디오 파일(Videos/VIDEO1.mp4, Videos/VIDEO2.mp4, 등)을 재생합니다.
+실행 순서
+서버 실행
+
+VideoServer 프로젝트를 실행하여 서버를 시작합니다.
+PortInput에 사용할 포트 번호를 입력하고 ServerCreate 버튼을 클릭하여 서버를 시작합니다.
+클라이언트 실행
+
+VideoClient 프로젝트를 실행합니다.
+IPInput에 서버의 IP 주소를 입력하고, PortInput에는 서버의 포트 번호를 입력합니다.
+ConnectToServer 버튼을 클릭하여 서버에 연결합니다.
+비디오 재생
+
+클라이언트에서는 Button1, Button2, Button3 등의 버튼을 클릭하여 서버로 비디오 재생 명령을 전송합니다.
+서버에서는 클라이언트로부터 명령을 수신하고, 이에 따라 VideoPlayerController에서 비디오를 재생합니다.
+이렇게 하면 클라이언트에서 버튼을 클릭하면 서버에서 해당하는 비디오를 재생하는 전체 과정을 완료할 수 있어요!

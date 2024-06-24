@@ -1,0 +1,16 @@
+~6.28까즤
+
+mov랑 mp4 구분
+
+아이들영상은 루핑되어야함
+
+1번 누르고 2번 누르는 순간 페이드효과줘야함. avpro시플래시 뜨는거 막아야함 -> avpro플래시 안뜬다
+
+ip와 포트주소 테스트해보기
+
+빌드해서도 테스트해보기
+
+모바일에서 exit버튼 누르면 모바일꺼지고
+다른 디스플레이에서는 idle영상으로 돌아가는거 확인
+
+Exception occurred inside BeeDriver: System.IO.IOException: The process cannot access the file 'C:\Users\imfine\Desktop\Mobile_application\Library\Bee\tundra.log.json' because it is being used by another process.
