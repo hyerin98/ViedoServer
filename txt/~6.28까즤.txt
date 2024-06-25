@@ -4,13 +4,21 @@ mov랑 mp4 구분
 
 아이들영상은 루핑되어야함
 
-1번 누르고 2번 누르는 순간 페이드효과줘야함. avpro시플래시 뜨는거 막아야함 -> avpro플래시 안뜬다
+1번 누르고 2번 누르는 순간 페이드효과줘야함. 
+영상 전환 시 avpro시플래시 뜨는거 막아야함 -> avpro플래시 안뜬다
 
-ip와 포트주소 테스트해보기
+1번 누르고 영상이 끝이 나면 다시 아이들 영상으로 전환 (페이트효과)
+
+ip와 포트주소 테스트해보기 -> 포트주소만 맞는다면 연결이 된다.
 
 빌드해서도 테스트해보기
 
-모바일에서 exit버튼 누르면 모바일꺼지고
-다른 디스플레이에서는 idle영상으로 돌아가는거 확인
+모바일에서 exit버튼 누르면 모바일꺼지고 -> exit버튼 누르면 idle모션으로 감 -> 그 상태에서 exit버튼 누르면 모바일 끄기 ( 다시 앱 키면 들어가짐)
+다른 디스플레이에서는 idle영상으로 돌아가는거 확인 -> loop끄면 돌아가지만 기본idle모션 끊기는거 수정해야함
 
-Exception occurred inside BeeDriver: System.IO.IOException: The process cannot access the file 'C:\Users\imfine\Desktop\Mobile_application\Library\Bee\tundra.log.json' because it is being used by another process.
+두트윈으로 효과주기
+
+
+mediaPlayer.OpenMedia(MediaPathType.RelativeToProjectFolder, videoPath2, true);
+
+1,2,3 버튼 과 exit버튼을 연달아 누르면 버튼을 눌렀는데도 딤드가 풀리는 버그있음
