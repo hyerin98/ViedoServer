@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
@@ -121,7 +121,7 @@ public class Server : MonoBehaviour
             return;
         }
 
-        if (data.StartsWith("VIDEO"))
+        if (data.StartsWith("VIDEO") || data.StartsWith("EXIT"))
         {
             VideoPlayerController.instance.OnIncomingData(data);
             Debug.Log("영상 재생중");
