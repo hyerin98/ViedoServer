@@ -1,4 +1,4 @@
- using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
@@ -9,14 +9,20 @@ using UnityEngine.UI;
 
 public class Server : MonoBehaviour
 {
+    public static Server instance;
     public TMP_InputField PortInput;
 
-    List<ServerClient> clients;
+    public List<ServerClient> clients;
     List<ServerClient> disconnectList;
 
     TcpListener server;
     bool serverStarted;
     public Button ConnectedServerButton;
+
+    void Awake()
+    {
+        instance = this;
+    }
 
     public void ServerCreate()
     {
@@ -45,6 +51,12 @@ public class Server : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            PortInput.ActivateInputField();
+            ServerCreate();
+        }
+
         if (!serverStarted) return;
 
         foreach (ServerClient c in clients)
@@ -112,7 +124,7 @@ public class Server : MonoBehaviour
         Broadcast("%NAME", new List<ServerClient>() { clients[clients.Count - 1] });
     }
 
-    void OnIncomingData(ServerClient c, string data)
+    public void OnIncomingData(ServerClient c, string data)
     {
         if (data.Contains("&NAME"))
         {
@@ -121,10 +133,25 @@ public class Server : MonoBehaviour
             return;
         }
 
-        if (data.StartsWith("VIDEO") || data.StartsWith("EXIT"))
+        if (data.StartsWith("VIDEO"))
         {
             VideoPlayerController.instance.OnIncomingData(data);
             Debug.Log("영상 재생중");
+            Broadcast("DISABLE_BUTTONS", clients);
+        }
+        else if (data.StartsWith("EXIT"))
+        {
+            VideoPlayerController.instance.OnIncomingData(data);
+            Debug.Log("영상 종료");
+            Broadcast("ENABLE_BUTTONS", clients);
+        }
+        else if (data.StartsWith("VIDEO_FINISHED"))
+        {
+            VideoPlayerController.instance.ServerNotifyVideoFinished(data);
+            string name = data.Split('|')[1];
+
+            Debug.Log($"영상 {name} 재생 종료");
+            Broadcast("ENABLE_BUTTONS", clients);
         }
         else
         {
@@ -133,7 +160,7 @@ public class Server : MonoBehaviour
         }
     }
 
-    void Broadcast(string data, List<ServerClient> cl)
+    public void Broadcast(string data, List<ServerClient> cl) 
     {
         foreach (var c in cl)
         {

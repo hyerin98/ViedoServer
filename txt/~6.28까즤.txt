@@ -22,3 +22,13 @@ ip와 포트주소 테스트해보기 -> 포트주소만 맞는다면 연결이 
 mediaPlayer.OpenMedia(MediaPathType.RelativeToProjectFolder, videoPath2, true);
 
 1,2,3 버튼 과 exit버튼을 연달아 누르면 버튼을 눌렀는데도 딤드가 풀리는 버그있음
+
+블렌더에서 제작하고 bone삽입
+-> fbx로 export
+-> 유니티에서 import하고
+각 bone에 hingejoint추가
+
+
+server빌드하면 경로문제떄문에 영상재생안되는 문제 고치기 -> 완
+영상선택 후, 영상이 나오고 있는데 exit버튼 누르면 어플리케이션 종료되는거 수정하기 -> 영상이 idle영상으로 되고 버튼 활성화로 수정해야함
+ui수정하기
