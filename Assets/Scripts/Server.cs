@@ -12,6 +12,9 @@ public class Server : MonoBehaviour
     public static Server instance;
     public TMP_InputField PortInput;
 
+
+    private const int port = 7777;
+
     public List<ServerClient> clients;
     List<ServerClient> disconnectList;
 
@@ -137,7 +140,7 @@ public class Server : MonoBehaviour
         {
             VideoPlayerController.instance.OnIncomingData(data);
             Debug.Log("영상 재생중");
-            Broadcast("DISABLE_BUTTONS", clients);
+            Broadcast("ENABLE_BUTTONS", clients);
         }
         else if (data.StartsWith("EXIT"))
         {

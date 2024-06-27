@@ -29,6 +29,16 @@ mediaPlayer.OpenMedia(MediaPathType.RelativeToProjectFolder, videoPath2, true);
 각 bone에 hingejoint추가
 
 
+6.26
 server빌드하면 경로문제떄문에 영상재생안되는 문제 고치기 -> 완
 영상선택 후, 영상이 나오고 있는데 exit버튼 누르면 어플리케이션 종료되는거 수정하기 -> 영상이 idle영상으로 되고 버튼 활성화로 수정해야함
 ui수정하기
+
+포트 내부에서 바로 정해놓기
+
+셋팅패널에서 버튼이나 인풋필드 형태 보고 카피하깅
+버튼은 무조건 배경색이 있어야해
+
+유니캐스트 / 브로드캐스트 / 멀티캐스트
+
+서류뽑아야해
