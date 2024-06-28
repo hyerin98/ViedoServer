@@ -1,8 +1,9 @@
 [System.Serializable]
 public class ConfigData
 {
-    public string num1 ="";
-    public string num2 = "";
-    public string num3 = "";
+    public int screenPositionX;
+    public int screenPositionY;
+    public int screenWidth;
+    public int screenHeight;
 }
 

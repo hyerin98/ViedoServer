@@ -41,6 +41,7 @@ public class Server : MonoBehaviour
             StartListening();
             serverStarted = true;
             VideoPlayerController.instance.ShowMessage($"서버가 {port}에서 시작되었습니다.");
+            TraceBox.Log($"서버가 {port}에서 시작되었습니다.");
 
             // 서버 생성되면 안보이게하기
             PortInput.gameObject.SetActive(false);
@@ -66,14 +67,14 @@ public class Server : MonoBehaviour
         {
             if (!IsConnected(c.tcp))
             {
-                Debug.Log("tcp연결x");
+                TraceBox.Log("tcp연결x");
                 c.tcp.Close();
                 disconnectList.Add(c);
                 continue;
             }
             else
             {
-                Debug.Log("tcp연결o");
+                TraceBox.Log("tcp연결o");
                 NetworkStream s = c.tcp.GetStream();
                 if (s.DataAvailable)
                 {
@@ -87,6 +88,7 @@ public class Server : MonoBehaviour
         for (int i = 0; i < disconnectList.Count - 1; i++)
         {
             Broadcast($"{disconnectList[i].clientName} 연결이 끊어졌습니다", clients);
+            TraceBox.Log($"{disconnectList[i].clientName} 연결이 끊어졌습니다", clients);
 
             clients.Remove(disconnectList[i]);
             disconnectList.RemoveAt(i);
@@ -125,6 +127,7 @@ public class Server : MonoBehaviour
         StartListening();
 
         Broadcast("%NAME", new List<ServerClient>() { clients[clients.Count - 1] });
+        TraceBox.Log("%NAME", new List<ServerClient>() { clients[clients.Count - 1] });
     }
 
     public void OnIncomingData(ServerClient c, string data)
@@ -133,19 +136,20 @@ public class Server : MonoBehaviour
         {
             c.clientName = data.Split('|')[1];
             Broadcast($"{c.clientName}이 연결되었습니다", clients);
+            TraceBox.Log($"{c.clientName}이 연결되었습니다", clients);
             return;
         }
 
         if (data.StartsWith("VIDEO"))
         {
             VideoPlayerController.instance.OnIncomingData(data);
-            Debug.Log("영상 재생중");
+            TraceBox.Log("영상 재생중");
             Broadcast("ENABLE_BUTTONS", clients);
         }
         else if (data.StartsWith("EXIT"))
         {
             VideoPlayerController.instance.OnIncomingData(data);
-            Debug.Log("영상 종료");
+            TraceBox.Log("영상 종료");
             Broadcast("ENABLE_BUTTONS", clients);
         }
         else if (data.StartsWith("VIDEO_FINISHED"))
@@ -153,13 +157,13 @@ public class Server : MonoBehaviour
             VideoPlayerController.instance.ServerNotifyVideoFinished(data);
             string name = data.Split('|')[1];
 
-            Debug.Log($"영상 {name} 재생 종료");
+            TraceBox.Log($"영상 {name} 재생 종료");
             Broadcast("ENABLE_BUTTONS", clients);
         }
         else
         {
             Broadcast($"{c.clientName} : {data}", clients);
-            Debug.Log("영상이 없어");
+            TraceBox.Log("영상이 없어");
         }
     }
 
@@ -176,6 +180,7 @@ public class Server : MonoBehaviour
             catch (Exception e)
             {
                 VideoPlayerController.instance.ShowMessage($"쓰기 에러 : {e.Message}를 클라이언트에게 {c.clientName}");
+                TraceBox.Log($"쓰기 에러 : {e.Message}를 클라이언트에게 {c.clientName}");
             }
         }
     }
