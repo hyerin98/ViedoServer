@@ -54,3 +54,5 @@ Button3를 클릭하면 "VIDEO3" 명령이 서버로 전송됩니다.
 
 VideoPlayerController는 명령에 따라 해당 비디오를 재생합니다.
 예를 들어, "VIDEO1" 명령을 수신하면 PlayVideo 메서드가 호출되어 Videos/VIDEO1.mp4 경로의 비디오를 재생합니다.
+
+---
