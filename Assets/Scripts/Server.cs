@@ -6,50 +6,61 @@ using System;
 using System.IO;
 using TMPro;
 using UnityEngine.UI;
+using IMFINE.Utils.ConfigManager;
 
 public class Server : MonoBehaviour
 {
     public static Server instance;
     public TMP_InputField PortInput;
 
-
-    private const int port = 7777;
+    //private const int port = 7777;
 
     public List<ServerClient> clients;
     List<ServerClient> disconnectList;
 
     TcpListener server;
-    bool serverStarted;
-    public Button ConnectedServerButton;
+    private bool _isServerPrepared;
+    public bool serverStarted;
 
     void Awake()
     {
         instance = this;
     }
 
+    void Start()
+    {
+        if(ConfigManager.instance.isPrepared)
+            _isServerPrepared = true;
+    }
+
+
     public void ServerCreate()
     {
         clients = new List<ServerClient>();
         disconnectList = new List<ServerClient>();
 
-        try
+        if (_isServerPrepared)
         {
-            int port = PortInput.text == "" ? 7777 : int.Parse(PortInput.text);
-            server = new TcpListener(IPAddress.Any, port);
-            server.Start();
+            try
+            {
+                PortInput.text = ConfigManager.instance.data.portInput.ToString();
+                int port = int.Parse(PortInput.text);
 
-            StartListening();
-            serverStarted = true;
-            VideoPlayerController.instance.ShowMessage($"서버가 {port}에서 시작되었습니다.");
-            TraceBox.Log($"서버가 {port}에서 시작되었습니다.");
+                server = new TcpListener(IPAddress.Any, port);
+                server.Start();
 
-            // 서버 생성되면 안보이게하기
-            PortInput.gameObject.SetActive(false);
-            ConnectedServerButton.gameObject.SetActive(false);
-        }
-        catch (Exception e)
-        {
-            VideoPlayerController.instance.ShowMessage($"Socket error: {e.Message}");
+                StartListening();
+                serverStarted = true;
+                VideoPlayerController.instance.ShowMessage($"서버가 {port}에서 시작되었습니다.");
+                TraceBox.Log($"서버가 {port}에서 시작되었습니다.");
+
+                // 서버 생성되면 안보이게하기
+                //PortInput.gameObject.SetActive(false);
+            }
+            catch (Exception e)
+            {
+                VideoPlayerController.instance.ShowMessage($"Socket error: {e.Message}");
+            }
         }
     }
 
@@ -67,14 +78,13 @@ public class Server : MonoBehaviour
         {
             if (!IsConnected(c.tcp))
             {
-                TraceBox.Log("tcp연결x");
+                //TraceBox.Log("tcp연결x");
                 c.tcp.Close();
                 disconnectList.Add(c);
                 continue;
             }
             else
             {
-                TraceBox.Log("tcp연결o");
                 NetworkStream s = c.tcp.GetStream();
                 if (s.DataAvailable)
                 {
@@ -127,7 +137,7 @@ public class Server : MonoBehaviour
         StartListening();
 
         Broadcast("%NAME", new List<ServerClient>() { clients[clients.Count - 1] });
-        TraceBox.Log("%NAME", new List<ServerClient>() { clients[clients.Count - 1] });
+        //TraceBox.Log("%NAME", new List<ServerClient>() { clients[clients.Count - 1] });
     }
 
     public void OnIncomingData(ServerClient c, string data)
@@ -143,13 +153,13 @@ public class Server : MonoBehaviour
         if (data.StartsWith("VIDEO"))
         {
             VideoPlayerController.instance.OnIncomingData(data);
-            TraceBox.Log("영상 재생중");
+            TraceBox.Log(data + " 영상 재생중");
             Broadcast("ENABLE_BUTTONS", clients);
         }
         else if (data.StartsWith("EXIT"))
         {
             VideoPlayerController.instance.OnIncomingData(data);
-            TraceBox.Log("영상 종료");
+            TraceBox.Log(data + "영상 종료");
             Broadcast("ENABLE_BUTTONS", clients);
         }
         else if (data.StartsWith("VIDEO_FINISHED"))
@@ -179,8 +189,7 @@ public class Server : MonoBehaviour
             }
             catch (Exception e)
             {
-                VideoPlayerController.instance.ShowMessage($"쓰기 에러 : {e.Message}를 클라이언트에게 {c.clientName}");
-                TraceBox.Log($"쓰기 에러 : {e.Message}를 클라이언트에게 {c.clientName}");
+                VideoPlayerController.instance.ShowMessage($"에러 : {e.Message}를 클라이언트에게 {c.clientName}");
             }
         }
     }

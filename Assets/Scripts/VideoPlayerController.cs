@@ -30,19 +30,22 @@ public class VideoPlayerController : MonoBehaviour
         switch (name)
         {
             case "2":
+                TraceBox.Log("VIDEO" + name + " 영상끝남");
                 videoManagerUI.PlayVideo("1");
                 break;
             case "3":
+                TraceBox.Log("VIDEO" + name + " 영상끝남");
                 videoManagerUI.PlayVideo("1");
                 break;
             case "4":
+                TraceBox.Log("VIDEO" + name + " 영상끝남");
                 videoManagerUI.PlayVideo("1");
                 break;
         }
 
         // 서버에 비디오 종료 알림
         ServerNotifyVideoFinished(name);
-        Debug.Log(name + "이라는 이름을 가진 동영상 끝났슴");
+        //TraceBox.Log(name + "이라는 이름을 가진 동영상 끝났슴");
     }
 
     public void ServerNotifyVideoFinished(string videoName)
@@ -51,7 +54,7 @@ public class VideoPlayerController : MonoBehaviour
         if (Server.instance != null)
         {
             Server.instance.Broadcast($"VIDEO_FINISHED|{videoName}", Server.instance.clients);
-            Debug.Log("서버에 메시지 보내기: " + videoName + "!!!!");
+            //TraceBox.Log("서버에 메시지 보내기: " + videoName + "!!!!");
         }
     }
 
@@ -74,7 +77,7 @@ public class VideoPlayerController : MonoBehaviour
         {
             messageText.text += messageText.text == "" ? data : "\n" + data;
         }
-        Debug.Log(data);
+        //TraceBox.Log(data);
 
         Invoke("DelayHideMessage", 2f);
     }
